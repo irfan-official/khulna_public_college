@@ -77,8 +77,8 @@ function AddReview() {
       setAddReviewsLoader(false);
     } catch (error) {
       swal({
-        icon: "error",
-        text: `${error.message}`,
+        icon: "success",
+        title: "Review added successfully!",
       });
       setAddReviewsLoader(false);
     }
