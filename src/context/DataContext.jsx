@@ -28,22 +28,38 @@ function DataContext({ children }) {
 
   const [loader, setLoader] = useState(true);
 
+  async function fetchWithRetry(apiCall, retries = 3, delay = 1000) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        return await apiCall();
+      } catch (err) {
+        if (i === retries - 1) throw err; // last retry — throw error
+        await new Promise((res) => setTimeout(res, delay)); // wait before retry
+        console.log(`Retrying... (${i + 1})`);
+      }
+    }
+  }
+
   const HomeDataFetching = useCallback(async () => {
     try {
       setLoader(true);
 
-      const res1 = await axiosInstance.get("/api/v1/home-data");
+      // Retry 3 times if backend is waking up (cold start)
+      const res1 = await fetchWithRetry(() =>
+        axiosInstance.get("/api/v1/home-data")
+      );
       setLimitedReviewsData(res1.data.data);
 
-      const res2 = await axiosInstance.get("/api/v1/home-others-data");
+      const res2 = await fetchWithRetry(() =>
+        axiosInstance.get("/api/v1/home-others-data")
+      );
       setUsersFeedback(res2.data.usersFeedback);
       setTopReviewers(res2.data.topReviewers);
 
       setFoodie(food_image);
-      setLoader(false);
     } catch (error) {
       console.error("Error fetching service data:", error);
-      alert(error.message);
+      alert("Backend waking up… please try again.");
     } finally {
       setLoader(false);
     }
