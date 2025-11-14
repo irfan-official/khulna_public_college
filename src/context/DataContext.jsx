@@ -28,7 +28,7 @@ function DataContext({ children }) {
 
   const [loader, setLoader] = useState(true);
 
-  async function fetchWithRetry(apiCall, retries = 3, delay = 1000) {
+  async function fetchWithRetry(apiCall, retries = 7, delay = 1000) {
     for (let i = 0; i < retries; i++) {
       try {
         return await apiCall();
@@ -72,7 +72,7 @@ function DataContext({ children }) {
         axiosInstance.get("/api/v1/shows/all-reviews")
       );
 
-      console.log("All reviews === ", res.data);
+      // console.log("All reviews === ", res.data);
       setAllReviews(res.data.data);
     } catch (error) {
       console.error("Error fetching service data:", error);
