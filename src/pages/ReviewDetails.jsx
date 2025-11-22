@@ -10,6 +10,7 @@ import { Data_Context } from "../context/DataContext.jsx";
 import Rating from "../components/Rating.jsx";
 import NoServiceFound from "./NoServiceFound.jsx";
 import { LiaCommentSolid } from "react-icons/lia";
+import { BsEmojiLaughing } from "react-icons/bs";
 
 function ReviewDetails() {
   const { id } = useParams();
@@ -19,6 +20,7 @@ function ReviewDetails() {
   const [selectedApp, setSelectedApp] = useState({});
   const [excedID, setExcedID] = useState(false);
   const [checkReview, setCheckReview] = useState(null);
+  const [clickComment, setClickComment] = useState(false);
 
   let { allReviews, loader } = useContext(Data_Context);
 
@@ -99,24 +101,51 @@ function ReviewDetails() {
             <LiaCommentSolid />
           </span>
         </section>
-        <section className="_insert_comments_ w-full flex justify-start items-center gap-4 mb-10">
-          <section className="__left_ w-[60px] lg:w-[53px] h-[52px] rounded-full overflow-hidden shadow border-2 border-slate-400 object-cover bg-cover">
-            <img
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bW9kZWx8ZW58MHx8MHx8fDA%3D"
-              alt=""
-              className="w-full h-full object-cover object-top bg-slate-600"
-            />
+        <section className="_insert_comments_ w-full h-[7.5rem] flex justify-start items-center gap-4 mb-10 ">
+          <section className="__left_ h-full w-[60px] lg:w-[77px] overflow-hidden ">
+            <section className="border-3 border-slate-300 w-full  h-[75px] rounded-full overflow-hidden object-cover bg-cover shadow-lg bg-amber-600">
+              <img
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bW9kZWx8ZW58MHx8MHx8fDA%3D"
+                alt=""
+                className="w-full h-full object-cover object-top bg-slate-600 "
+              />
+            </section>
           </section>
-          <section className="__right_ w-full h-full ">
+          <section className="__right_ w-full  ">
             <input
               onClick={() => {
-                alert("hello");
+                setClickComment(true);
               }}
-              readOnly={true}
+              readOnly={!clickComment}
               placeholder="Add a comment..."
               type="text"
-              className="w-full h-full border-b-2 placeholder:font-semibold outline-none pb-1 cursor-text"
+              className="w-full  border-b-2 placeholder:font-semibold outline-none pb-1 cursor-text"
             />
+
+            <section className="_comment-button_ w-full flex items-center justify-between mt-2 ">
+              <section className="_left_ text-3xl cursor-pointer shadow-lg rounded-full">
+                {clickComment && <BsEmojiLaughing />}
+              </section>
+              <section className="_right_ flex gap-2 items-center justify-between">
+                {clickComment ? (
+                  <>
+                    <button
+                      onClick={() => {
+                        setClickComment(false);
+                      }}
+                      className="px-5 py-3 rounded-full bg-slate-200 font-semibold shadow-md cursor-pointer border border-slate-100"
+                    >
+                      Cancel
+                    </button>
+                    <button className="px-5 py-3 rounded-full bg-slate-950 text-white font-semibold shadow-md cursor-pointer border border-slate-100">
+                      Comment
+                    </button>
+                  </>
+                ) : (
+                  <span className="_temporary-for-support_ px-5 py-[25px]"></span>
+                )}
+              </section>
+            </section>
           </section>
         </section>
         {/* <hr className="w-full border-b-2" /> */}
