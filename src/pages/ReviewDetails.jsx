@@ -20,8 +20,6 @@ function ReviewDetails() {
 
   const { user } = useContext(Auth_Context);
 
-  // const { apps, setApps, totalApps, setTotalApps } = useContext(UserContext);
-
   const [selectedApp, setSelectedApp] = useState({});
   const [exceedID, setExceedID] = useState(false);
   const [checkReview, setCheckReview] = useState(null);
@@ -40,7 +38,7 @@ function ReviewDetails() {
     // },
   ]);
 
-  let { allReviews, loader } = useContext(Data_Context);
+  let { allReviews, AllReviewsDataFetching, loader } = useContext(Data_Context);
 
   const axiosSecureInstance = useAxiosSecure();
 
@@ -98,15 +96,14 @@ function ReviewDetails() {
     if (loader) {
       return;
     }
-    // if (allReviews.length < 1) {
-    //   DataFetching();
-    // }
+    if (allReviews.length < 1) {
+      AllReviewsDataFetching();
+      return;
+    }
 
     const foundReview = allReviews.find((obj) => {
       let check = String(obj._id) === String(id);
-      // console.log(
-      //   `${obj._id} === ${Number(id)} = ${String(obj._id) === String(id)}`
-      // );
+
       return check;
     });
 
@@ -141,7 +138,7 @@ function ReviewDetails() {
   if (loader) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
+        <span className="loading loading-spinner loading-lg scale-200"></span>
       </div>
     );
   }

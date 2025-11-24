@@ -106,6 +106,7 @@ function DataContext({ children }) {
   return (
     <Data_Context.Provider
       value={{
+        AllReviewsDataFetching,
         limitedReviewsData,
         setLimitedReviewsData,
         usersFeedback,
@@ -117,7 +118,6 @@ function DataContext({ children }) {
         setLoader,
         addReview,
         setAddReview,
-        AllReviewsDataFetching,
       }}
     >
       {children}
